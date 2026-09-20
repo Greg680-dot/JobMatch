@@ -23,7 +23,10 @@ mkdir -p database storage/framework/cache/data storage/framework/sessions storag
 touch database/database.sqlite
 chmod -R 777 database storage bootstrap/cache 2>/dev/null || true
 
-# 4. Migrations & Données de démonstration
+# 4. Découverte des packages
+php artisan package:discover --ansi
+
+# 5. Migrations & Données de démonstration
 echo "Exécution des migrations et chargement des données de test..."
 php artisan migrate --force
 php artisan db:seed --class=JobMatchSeeder --force

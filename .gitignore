@@ -1,0 +1,29 @@
+﻿# Dependencies & Build
+backend/vendor/
+backend/node_modules/
+backend/public/build/
+backend/public/hot/
+backend/public/storage/
+ai-service/__pycache__/
+ai-service/.venv/
+ai-service/venv/
+
+# Environment files
+backend/.env
+backend/.env.backup
+backend/.env.production
+.env
+
+# Database & Logs
+backend/*.log
+backend/storage/logs/*.log
+backend/database/database.sqlite
+backend/database/database.sqlite-journal
+
+# Local binaries & artifacts
+cloudflared.exe
+*.txt
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

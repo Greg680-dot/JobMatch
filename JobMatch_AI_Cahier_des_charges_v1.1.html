@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>JobMatch AI — Cahier des charges</title>
+<style>
+    @page {
+        size: A4;
+        margin: 20mm 16mm 20mm 16mm;
+        @bottom-right {
+            content: counter(page) " / " counter(pages);
+            font-size: 8.5pt;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #94a3b8;
+        }
+        @top-right {
+            content: "JobMatch AI — Cahier des charges v1.1";
+            font-size: 8pt;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #94a3b8;
+        }
+    }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: #1e293b;
+        font-size: 9.5pt;
+        line-height: 1.5;
+        margin: 0;
+        padding: 0;
+    }
+    .cover-page {
+        page-break-after: always;
+        height: 90vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    .cover-badge {
+        display: inline-block;
+        background: #e0e7ff;
+        color: #3730a3;
+        font-weight: 600;
+        font-size: 9pt;
+        padding: 4px 12px;
+        border-radius: 999px;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .cover-title {
+        font-size: 32pt;
+        font-weight: 800;
+        color: #1e3a8a;
+        margin: 0 0 8px 0;
+        letter-spacing: -0.02em;
+    }
+    .cover-app {
+        font-size: 24pt;
+        font-weight: 700;
+        color: #2563eb;
+        margin: 0 0 16px 0;
+    }
+    .cover-desc {
+        font-size: 13pt;
+        color: #64748b;
+        font-style: italic;
+        max-width: 500px;
+        margin-bottom: 50px;
+    }
+    .cover-meta {
+        border-top: 1px solid #e2e8f0;
+        padding-top: 24px;
+        font-size: 10pt;
+        color: #475569;
+        line-height: 1.6;
+    }
+    h1 {
+        color: #1e3a8a;
+        font-size: 16pt;
+        font-weight: 700;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 5px;
+        margin-top: 24px;
+        margin-bottom: 12px;
+        page-break-after: avoid;
+    }
+    h2 {
+        color: #2563eb;
+        font-size: 12pt;
+        font-weight: 600;
+        margin-top: 16px;
+        margin-bottom: 6px;
+        page-break-after: avoid;
+    }
+    p {
+        margin: 0 0 8px 0;
+        text-align: justify;
+    }
+    ul {
+        margin: 0 0 12px 18px;
+        padding: 0;
+    }
+    li {
+        margin-bottom: 5px;
+    }
+    strong {
+        color: #0f172a;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 12px 0 16px 0;
+        font-size: 8.8pt;
+        page-break-inside: avoid;
+    }
+    th {
+        background-color: #1e3a8a;
+        color: #ffffff;
+        font-weight: 600;
+        text-align: left;
+        padding: 7px 10px;
+        border: 1px solid #1e3a8a;
+    }
+    td {
+        padding: 7px 10px;
+        border: 1px solid #e2e8f0;
+        vertical-align: top;
+    }
+    tr:nth-child(even) td {
+        background-color: #f8fafc;
+    }
+    .highlight-box {
+        background-color: #eff6ff;
+        border-left: 4px solid #3b82f6;
+        padding: 10px 14px;
+        margin: 12px 0;
+        border-radius: 0 6px 6px 0;
+        font-size: 9pt;
+    }
+    .badge {
+        display: inline-block;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 7.5pt;
+        font-weight: 600;
+    }
+    .badge-high { background: #fee2e2; color: #991b1b; }
+    .badge-med { background: #fef3c7; color: #92400e; }
+    .page-break {
+        page-break-before: always;
+    }
+</style>
+</head>
+<body>
+
+<div class="cover-page">
+    <div class="cover-badge">Document de Référence Technique & Produit</div>
+    <div class="cover-title">CAHIER DES CHARGES</div>
+    <div class="cover-app">JobMatch AI</div>
+    <div class="cover-desc">Plateforme de recherche d'opportunités et d'assistance à la candidature</div>
+    <div class="cover-meta">
+        <strong>Version :</strong> 1.1 (Révisée & Enrichie) &bull; <strong>Date :</strong> Septembre 2026<br>
+        <strong>Porteur de projet :</strong> Grégoire<br>
+        <strong>Architecture :</strong> Laravel 11 + Vue.js 3 / Python FastAPI & pgvector
+    </div>
+</div>
+
+<h1>1. Contexte et objectifs</h1>
+<h2>1.1 Contexte</h2>
+<p>De nombreux candidats (chercheurs d'emploi, stagiaires, étudiants en quête de bourses, freelances) passent un temps considérable à parcourir manuellement de multiples plateformes pour trouver des opportunités correspondant à leur profil, puis à rédiger une candidature personnalisée pour chacune. Ce processus est chronophage, répétitif et souvent inefficace.</p>
+<p><strong>JobMatch AI</strong> vise à automatiser la découverte d'opportunités pertinentes et à assister l'utilisateur dans la préparation et la personnalisation de sa candidature, tout en maintenant un contrôle humain strict (<em>human-in-the-loop</em>) avant tout envoi.</p>
+
+<h2>1.2 Objectifs du projet</h2>
+<ul>
+    <li><strong>Centraliser la veille d'opportunités :</strong> regroupement d'offres (emploi, stage, bourse, freelance) issues de sources hybrides (APIs ouvertes, flux d'offres et scraping ciblé) en une seule interface.</li>
+    <li><strong>Matching intelligent :</strong> mise en correspondance automatique et sémantique entre les profils candidats et les offres collectées (vectorisation et filtrage multicritère).</li>
+    <li><strong>Génération assistée à fort impact :</strong> rédaction d'une lettre de motivation sur-mesure et proposition de restructuration de CV adaptée à chaque annonce ciblée.</li>
+    <li><strong>Faciliter la soumission :</strong> préparation d'emails prêts à l'envoi et assistance de complétion de formulaires web avec validation humaine obligatoire.</li>
+    <li><strong>Tableau de bord de suivi :</strong> gestion du cycle de vie des candidatures envoyées et analyse de leur statut.</li>
+</ul>
+
+<h2>1.3 Public cible</h2>
+<ul>
+    <li><strong>Phase 1 (MVP & V1) : Usage personnel</strong> (un candidat pilote son propre profil de recherche, ses filtres et ses candidatures).</li>
+    <li><strong>Phase 2 (V2) : Ouverture multi-utilisateurs SaaS</strong> (structures d'accompagnement à l'emploi, universités, cabinets de reclassement, coachs en insertion).</li>
+</ul>
+
+<h1>2. Périmètre fonctionnel</h1>
+<h2>2.1 Gestion du profil utilisateur</h2>
+<ul>
+    <li>Création de compte et authentification sécurisée (gestion de session, réinitialisation de mot de passe).</li>
+    <li>Upload multi-formats du CV (PDF, DOCX) avec extraction automatique par IA des métadonnées structurées : compétences techniques et comportementales, expériences professionnelles, formations, langues et réalisations.</li>
+    <li>Définition des critères de recherche : types de contrats (CDI, CDD, stage, alternance, freelance, bourse), secteurs d'activité, localisation géographique (incluant télétravail partiel/total), rémunération minimale, mots-clés obligatoires et mots-clés exclus.</li>
+    <li>Conformité RGPD : export des données personnelles et droit à l'effacement définitif du compte et des CVs associés.</li>
+</ul>
+
+<h2>2.2 Collecte des opportunités (Ingestion hybride)</h2>
+<ul>
+    <li><strong>Priorité 1 — APIs ouvertes & flux de syndication :</strong> intégration prioritaire des APIs publiques gratuites et stables (ex. API France Travail, Adzuna, Jobposting JSON-LD, flux RSS d'offres) éliminant les risques de blocage IP.</li>
+    <li><strong>Priorité 2 — Scraping ciblé :</strong> extracteurs dédiés (Scrapy / Playwright) pour les sites carrières d'entreprises clés, plateformes locales et ONG.</li>
+    <li><strong>Dédoublonnage intelligent :</strong> calcul d'un hash d'unicité (entreprise normalisée + intitulé + localisation + extrait description) pour éliminer les réplications.</li>
+    <li><strong>Configuration dynamique :</strong> ajout et paramétrage d'une nouvelle source (URL, sélecteurs, fréquence) via panneau d'administration sans redéploiement de code.</li>
+</ul>
+
+<h2>2.3 Matching et scoring sémantique</h2>
+<ul>
+    <li>Génération d'embeddings vectoriels pour chaque description d'offre et profil candidat.</li>
+    <li>Calcul de similarité cosinus via l'extension PostgreSQL <code>pgvector</code> pour obtenir un score de 0 à 100%.</li>
+    <li>Application de filtres durs d'exclusion (mots-clés rédhibitoires, localisation incompatible, contrat non désiré) éliminant l'offre avant affichage.</li>
+    <li>Restitution claire sur le tableau de bord avec tri par score et mise en valeur des compétences communes.</li>
+</ul>
+
+<h2>2.4 Génération assistée de la candidature</h2>
+<ul>
+    <li>Génération d'une lettre de motivation sur-mesure exploitant l'intersection exacte entre le profil du candidat et les exigences du poste (ton professionnel, valorisation d'exemples concrets).</li>
+    <li>Recommandation d'adaptation du CV : proposition de réagencement des compétences et expériences prioritaires pour franchir les filtres ATS (Applicant Tracking Systems), au format Markdown ou PDF épuré.</li>
+    <li>Édition manuelle obligatoire : validation impérative par le candidat avant tout envoi.</li>
+</ul>
+
+<h2>2.5 Envoi et suivi de la candidature</h2>
+<ul>
+    <li><strong>Mode Email :</strong> génération automatique de l'objet, du corps et des pièces jointes (CV et lettre en PDF), envoi via SMTP personnel ou client mail local.</li>
+    <li><strong>Mode Formulaire Web :</strong> assistance au pré-remplissage via extension de navigateur ou panneau d'aide au copier-coller 1-clic pour contourner sans friction les CAPTCHA et systèmes de sécurité tiers.</li>
+    <li><strong>Historique et suivi :</strong> tableau de bord Kanban (Brouillon, Validée, Envoyée, Relancée, Entretien, Refusée, Acceptée).</li>
+</ul>
+
+<h2>2.6 Système d'alertes et de rappels</h2>
+<ul>
+    <li>Alerte proactive lorsqu'une nouvelle offre collectée dépasse un seuil de pertinence prédéfini (ex. > 85%).</li>
+    <li>Rappels programmés pour les candidatures en brouillon non finalisées.</li>
+</ul>
+
+<div class="page-break"></div>
+
+<h1>3. Exigences non fonctionnelles</h1>
+<h2>3.1 Infrastructure et dimensionnement</h2>
+<p>Déploiement obligatoire sur un <strong>VPS Linux dédié</strong> (ou environnement conteneurisé Docker) et formellement proscrit sur hébergement mutualisé standard. Le serveur requiert <strong>4 vCPU et 8 Go de RAM minimum</strong> afin d'allouer les ressources nécessaires à Playwright (Chromium headless), PostgreSQL avec <code>pgvector</code>, Redis et les runtimes PHP/Python.</p>
+
+<h2>3.2 Performance et asynchronisme</h2>
+<ul>
+    <li>Aucun traitement lourd (scraping, requêtes LLM, calcul vectoriel) n'est exécuté de manière synchrone dans la requête HTTP utilisateur.</li>
+    <li>Temps de calcul du matching vectoriel &lt; 1 seconde grâce aux index vectoriels HNSW sous PostgreSQL.</li>
+</ul>
+
+<h2>3.3 Sécurité, confidentialité et RGPD</h2>
+<ul>
+    <li>Chiffrement des données sensibles au repos et en transit (TLS 1.3 / HTTPS).</li>
+    <li>Cloisonnement strict : accès aux CVs, profils et historiques strictement limité à leur propriétaire (<code>user_id</code>).</li>
+    <li>Aucune conservation d'identifiants ou mots de passe de plateformes tierces sur les serveurs.</li>
+    <li>Politique de purge automatique des données d'offres expirées depuis plus de 60 jours.</li>
+</ul>
+
+<h2>3.4 Éthique et conformité</h2>
+<ul>
+    <li>Respect systématique des fichiers <code>robots.txt</code> et mise en œuvre d'un <em>rate-limiting</em> raisonnable avec délais aléatoires pour préserver les serveurs cibles.</li>
+    <li>Règle absolue du <em>Zero-Spam</em> : aucune candidature n'est transmise sans validation explicite de l'utilisateur.</li>
+</ul>
+
+<h1>4. Architecture technique</h1>
+<h2>4.1 Répartition des responsabilités et gouvernance des données</h2>
+<p>L'application repose sur un modèle à deux services complémentaires avec une délimitation stricte pour éliminer tout risque de conflit de schéma sur la base de données :</p>
+
+<table>
+    <thead>
+        <tr>
+            <th style="width: 32%;">Composant</th>
+            <th>Rôle & Responsabilités</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Application Laravel 11 + Vue 3 (Inertia)</strong></td>
+            <td><strong>Source unique de vérité métier :</strong> Authentification, gestion exclusive des migrations BDD, dashboard candidat, validation des candidatures, notifications.</td>
+        </tr>
+        <tr>
+            <td><strong>Service Python (FastAPI + Workers)</strong></td>
+            <td><strong>Moteur d'ingestion & IA :</strong> Scraping Scrapy/Playwright, parsing CVs, génération vectorielle, orchestration des appels LLM. Consomme les files Redis.</td>
+        </tr>
+        <tr>
+            <td><strong>PostgreSQL 16 + pgvector</strong></td>
+            <td>Base de données relationnelle et vectorielle unifiée avec index HNSW pour recherche sémantique ultra-rapide.</td>
+        </tr>
+        <tr>
+            <td><strong>Redis</strong></td>
+            <td>Broker de messages asynchrones (Laravel Queues & Python Celery/RQ) et cache haute performance.</td>
+        </tr>
+        <tr>
+            <td><strong>Infrastructure VPS Docker</strong></td>
+            <td>Conteneurs Docker Compose isolés (web, worker-python, db-pgvector, redis) sur VPS Linux dédié.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>4.2 Stratégie d'étagement des modèles d'IA</h2>
+<table>
+    <thead>
+        <tr>
+            <th style="width: 28%;">Tâche Métier</th>
+            <th style="width: 30%;">Modèle Recommandé</th>
+            <th>Rationale Technique</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Extraction structurée CV & Offres</strong></td>
+            <td>Claude 3.5 Haiku / Gemini 2.5 Flash</td>
+            <td>Latence ultra-faible, parsing JSON déterministe, coût dérisoire par document.</td>
+        </tr>
+        <tr>
+            <td><strong>Calcul des Embeddings (Matching)</strong></td>
+            <td>Voyage AI (voyage-3-lite) / text-embedding-3-small</td>
+            <td>Spécialisé pour la similarité sémantique, format dense optimisé pour pgvector.</td>
+        </tr>
+        <tr>
+            <td><strong>Génération Lettre de motivation</strong></td>
+            <td>Claude 3.5 Sonnet</td>
+            <td>Qualité rédactionnelle supérieure, style naturel, fidélité exemplaire au profil sans hallucinations.</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="page-break"></div>
+
+<h1>5. Modèle de données (Synthèse des entités)</h1>
+<table>
+    <thead>
+        <tr>
+            <th style="width: 25%;">Entité</th>
+            <th>Description & Champs Clés</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>utilisateurs</code></td>
+            <td>Comptes de la plateforme (id, email, password_hash, rôle, dates de création/connexion).</td>
+        </tr>
+        <tr>
+            <td><code>cvs</code></td>
+            <td>CVs téléversés (id, user_id, original_filename, parsed_data JSONB, embedding VECTOR, is_default).</td>
+        </tr>
+        <tr>
+            <td><code>profils_recherche</code></td>
+            <td>Objectifs déclarés (id, user_id, types_contrat, localisations, salaire_min, keywords_must, keywords_excluded).</td>
+        </tr>
+        <tr>
+            <td><code>sources</code></td>
+            <td>Connecteurs configurés (id, nom, type_source ['api'|'rss'|'scraper'], config_selectors JSONB, is_active).</td>
+        </tr>
+        <tr>
+            <td><code>opportunites</code></td>
+            <td>Offres collectées (id, source_id, titre, entreprise, localisation, description, deduplication_hash UNIQUE, embedding VECTOR, url).</td>
+        </tr>
+        <tr>
+            <td><code>matches</code></td>
+            <td>Scores calculés (id, user_id, opportunite_id, score_pertinence, details_matching JSONB, statut ['nouveau'|'favori'|'ignore']).</td>
+        </tr>
+        <tr>
+            <td><code>candidatures</code></td>
+            <td>Dossiers de candidature (id, match_id, user_id, lettre_motivation, cv_modifications JSONB, statut ['brouillon'|'envoyee'|'entretien'|'reponse'], mode_envoi).</td>
+        </tr>
+    </tbody>
+</table>
+
+<h1>6. Gestion des risques et solutions retenues</h1>
+<table>
+    <thead>
+        <tr>
+            <th style="width: 28%;">Risque Identifié</th>
+            <th style="width: 14%;">Niveau</th>
+            <th>Solution Validée dans le Cahier des Charges</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Rupture de sélecteurs HTML</strong></td>
+            <td><span class="badge badge-high">ÉLEVÉ</span></td>
+            <td>Priorisation des APIs/flux RSS stables. Alertes automatiques en cas d'anomalie d'extraction sur les scrapers.</td>
+        </tr>
+        <tr>
+            <td><strong>CAPTCHA & anti-bots formulaires</strong></td>
+            <td><span class="badge badge-high">ÉLEVÉ</span></td>
+            <td>Remplissage déporté sur le navigateur (extension ou assistant 1-clic) évitant tout blocage serveur.</td>
+        </tr>
+        <tr>
+            <td><strong>CGU LinkedIn & blocages comptes</strong></td>
+            <td><span class="badge badge-high">ÉLEVÉ</span></td>
+            <td>Exclusion du chemin critique V1. Focus sur sites carrières directs et APIs ouvertes d'emploi.</td>
+        </tr>
+        <tr>
+            <td><strong>Saturation mémoire (OOM) Chromium</strong></td>
+            <td><span class="badge badge-med">MOYEN</span></td>
+            <td>Recyclage régulier des contextes Playwright, limitation stricte de concurrence sur le VPS.</td>
+        </tr>
+        <tr>
+            <td><strong>Génération de lettres stéréotypées</strong></td>
+            <td><span class="badge badge-med">MOYEN</span></td>
+            <td>Relecture humaine obligatoire. Prompts stricts interdisant les inventions d'expériences.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h1>7. Phasage et feuille de route</h1>
+<table>
+    <thead>
+        <tr>
+            <th style="width: 22%;">Phase</th>
+            <th style="width: 48%;">Périmètre Fonctionnel</th>
+            <th>Objectif Clé</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>MVP (Mois 1 - 2)</strong></td>
+            <td>2-3 sources stables (API France Travail + flux RSS), upload CV, parsing rapide, matching pgvector, génération lettre Claude, envoi email.</td>
+            <td>Valider le concept et la valeur ajoutée sur un usage individuel initial.</td>
+        </tr>
+        <tr>
+            <td><strong>V1 (Mois 3 - 4)</strong></td>
+            <td>Assistant de formulaires web, tableau de bord Kanban complet, alertes & notifications, scrapers carrières ciblés.</td>
+            <td>Produit complet pour un usage individuel régulier et intensif.</td>
+        </tr>
+        <tr>
+            <td><strong>V2 (Mois 5+)</strong></td>
+            <td>Multi-tenancy, gestion de cohortes pour structures d'accompagnement à l'emploi (SaaS B2B), connecteurs étendus.</td>
+            <td>Passage à l'échelle et commercialisation auprès d'organismes.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h1>8. Livrables attendus</h1>
+<ul>
+    <li><strong>Code source versionné (Git) :</strong> dépôts pour l'application Laravel 11 / Vue 3 et le service Python FastAPI.</li>
+    <li><strong>Infrastructure-as-Code :</strong> fichier <code>docker-compose.yml</code> complet orchestrant l'ensemble de la pile technique (Web, Worker, PostgreSQL pgvector, Redis).</li>
+    <li><strong>Schéma de base de données :</strong> migrations Laravel versionnées et scripts de seeders.</li>
+    <li><strong>Documentation technique :</strong> spécification des endpoints API, événements Redis et guide de paramétrage des connecteurs.</li>
+    <li><strong>Guide utilisateur :</strong> guide pas-à-pas pour la configuration du profil, la relecture des candidatures et le suivi Kanban.</li>
+</ul>
+
+</body>
+</html>

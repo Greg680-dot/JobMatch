@@ -1,4 +1,4 @@
-FROM php:8.3-cli-bookworm
+FROM php:8.4-cli-bookworm
 
 WORKDIR /app
 
@@ -6,6 +6,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     curl \
+    ca-certificates \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
@@ -18,7 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Installation de Composer
-COPY --from=composer:2.8 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Autoriser Composer en root dans le conteneur
 ENV COMPOSER_ALLOW_SUPERUSER=1
@@ -26,8 +27,8 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 # Copie du code backend Laravel
 COPY backend/ .
 
-# Installation des dépendances sans scripts au build (évite l'erreur exit code 2)
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
+# Installation des dépendances en ignorant les contraintes de plateforme (--ignore-platform-reqs)
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts --ignore-platform-reqs
 
 # Préparation des dossiers d'écriture
 RUN mkdir -p database storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \

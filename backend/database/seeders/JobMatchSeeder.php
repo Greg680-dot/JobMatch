@@ -9,6 +9,7 @@ use App\Models\ProfilRecherche;
 use App\Models\Opportunite;
 use App\Models\JobMatch;
 use App\Models\Candidature;
+use App\Services\BeninAfricaJobService;
 
 class JobMatchSeeder extends Seeder
 {
@@ -36,7 +37,7 @@ class JobMatchSeeder extends Seeder
         $cvData = [
             'nom' => 'Candidat Démo',
             'email' => 'candidat.demo@jobmatch.ai',
-            'telephone' => '06 00 00 00 00',
+            'telephone' => '+229 01 97 00 00 00',
             'titre_professionnel' => 'Ingénieur d\'Études & Développement Logiciel',
             'annees_experience' => 4,
             'competences_techniques' => [
@@ -48,7 +49,7 @@ class JobMatchSeeder extends Seeder
             'experiences' => [
                 [
                     'poste' => 'Ingénieur d\'Études & Conception Web',
-                    'entreprise' => 'Digital Solutions SAS',
+                    'entreprise' => 'Digital Solutions & Services',
                     'periode' => '2022 - 2026',
                     'description' => 'Conception et développement de plateformes métiers performantes. Modélisation de bases de données, création d\'APIs robustes et mise en place de tests automatisés.'
                 ],
@@ -62,108 +63,46 @@ class JobMatchSeeder extends Seeder
             'formations' => [
                 [
                     'diplome' => 'Master Informatique & Génie Logiciel',
-                    'etablissement' => 'Université des Sciences & Technologies',
+                    'etablissement' => 'Institut Polytechnique / Université',
                     'annee' => '2020'
                 ]
             ],
-            'langues' => ['Français (Natif)', 'Anglais (Professionnel C1)']
+            'langues' => ['Français (Natif)', 'Anglais (Professionnel)']
         ];
 
         $cv = CV::updateOrCreate(
             ['user_id' => $user->id, 'is_default' => true],
             [
                 'original_filename' => 'CV_Candidat_Demo.pdf',
-                'raw_text' => 'Candidat Démo - Ingénieur d\'Études & Développement Logiciel...',
+                'raw_text' => 'Candidat Démo - Ingénieur d\'Études & Développement Logiciel - Cotonou, Bénin...',
                 'parsed_data' => $cvData,
                 'embedding' => array_fill(0, 64, 0.12),
                 'is_default' => true,
             ]
         );
 
-        // 3. Objectifs de recherche
+        // 3. Objectifs de recherche ciblés Bénin & Afrique
         ProfilRecherche::updateOrCreate(
             ['user_id' => $user->id],
             [
-                'type_opportunite' => 'Ingénieur d\'Études & Développement',
-                'pays' => 'France',
+                'type_opportunite' => 'Ingénieur d\'Études & Développement Logiciel',
+                'pays' => 'Bénin',
                 'types_contrat' => ['CDI', 'FREELANCE'],
-                'localisations' => ['France', 'Télétravail'],
-                'salaire_min' => 42000,
+                'localisations' => ['Bénin', 'Afrique de l\'Ouest', 'Télétravail'],
+                'salaire_min' => 6000000,
                 'keywords_must' => ['Architecture', 'APIs'],
                 'keywords_excluded' => ['COBOL', 'SAP'],
                 'teletravail_only' => false,
             ]
         );
 
-        // 4. Création des opportunités de test
-        $opportunitiesData = [
-            [
-                'titre' => 'Ingénieur d\'Études & Développement Logiciel (H/F)',
-                'entreprise' => 'InnoTech Solutions',
-                'localisation' => 'Paris / Télétravail partiel',
-                'type_contrat' => 'CDI',
-                'description' => 'Nous recherchons un Ingénieur d\'Études et Développement confirmé. Vous participerez activement à la conception et au déploiement de notre plateforme SaaS métier. Compétences attendues : Architecture Logicielle, APIs Web, Bases de Données relationnelles, Méthodologies Agiles et Qualité logicielle.',
-                'salaire_indicatif' => 52000,
-                'teletravail' => true,
-                'url_source' => 'https://example.com/jobs/innotech-fullstack',
-                'deduplication_hash' => md5('innotech_fullstack_2026'),
-                'date_publication' => date('Y-m-d'),
-                'score' => 92.5,
-                'matching_skills' => ['Architecture Logicielle', 'APIs & Services Web', 'Bases de Données', 'Méthodologies Agiles'],
-                'missing_skills' => ['Sécurité Avancée', 'Cloud Hybride'],
-                'summary' => 'Match exceptionnel à 92.5% : adéquation directe sur l\'architecture, les APIs et la conception de données.',
-            ],
-            [
-                'titre' => 'Chef de Projet Technique & Solutions Numériques',
-                'entreprise' => 'DataFlow Solutions',
-                'localisation' => 'Lyon / Télétravail complet',
-                'type_contrat' => 'CDI',
-                'description' => 'Pilotage de projets numériques, conception d\'architectures logicielles performantes, traitement de flux de données et encadrement technique.',
-                'salaire_indicatif' => 55000,
-                'teletravail' => true,
-                'url_source' => 'https://example.com/jobs/dataflow-solutions',
-                'deduplication_hash' => md5('dataflow_solutions_2026'),
-                'date_publication' => date('Y-m-d'),
-                'score' => 84.0,
-                'matching_skills' => ['Architecture Logicielle', 'Bases de Données', 'Méthodologies Agiles'],
-                'missing_skills' => ['Gouvernance Data', 'Audit Qualité'],
-                'summary' => 'Match élevé à 84.0% : vos expériences en ingénierie et gestion de projet correspondent au profil recherché.',
-            ],
-            [
-                'titre' => 'Consultant Ingénierie & Systèmes d\'Information',
-                'entreprise' => 'Digital Partners',
-                'localisation' => 'Télétravail complet',
-                'type_contrat' => 'FREELANCE',
-                'description' => 'Mission de conseil et développement pour la refonte d\'un portail client sécurisé, évolutif et orienté services.',
-                'salaire_indicatif' => 60000,
-                'teletravail' => true,
-                'url_source' => 'https://example.com/jobs/digital-freelance',
-                'deduplication_hash' => md5('digital_freelance_2026'),
-                'date_publication' => date('Y-m-d'),
-                'score' => 78.5,
-                'matching_skills' => ['APIs & Services Web', 'Conception Web & Cloud'],
-                'missing_skills' => ['Gouvernance Cloud', 'Architecture Micro-Frontends'],
-                'summary' => 'Match à 78.5% : mission adaptée à vos compétences en conception de services et qualité logicielle.',
-            ],
-            [
-                'titre' => 'Lead Concepteur d\'Applications Numériques',
-                'entreprise' => 'MediaGroup France',
-                'localisation' => 'Bordeaux / Hybride',
-                'type_contrat' => 'CDI',
-                'description' => 'Conception et maintenance d\'applications web à fort trafic, optimisation des flux de données et intégration continue.',
-                'salaire_indicatif' => 46000,
-                'teletravail' => false,
-                'url_source' => 'https://example.com/jobs/mediagroup-concepteur',
-                'deduplication_hash' => md5('mediagroup_concepteur_2026'),
-                'date_publication' => date('Y-m-d'),
-                'score' => 65.0,
-                'matching_skills' => ['Architecture Logicielle', 'Bases de Données'],
-                'missing_skills' => ['Message Queuing', 'Haute Disponibilité'],
-                'summary' => 'Match moyen à 65.0% : profil solide en architecture et conception de données.',
-            ],
-        ];
+        // 4. Chargement des offres réelles Bénin, Afrique de l'Ouest et Remote
+        $jobService = app(BeninAfricaJobService::class);
+        $realOffers = $jobService->collectAll('all');
 
-        foreach ($opportunitiesData as $oppData) {
+        $cvSkills = $cvData['competences_techniques'];
+
+        foreach ($realOffers as $oppData) {
             $opp = Opportunite::updateOrCreate(
                 ['deduplication_hash' => $oppData['deduplication_hash']],
                 [
@@ -172,12 +111,29 @@ class JobMatchSeeder extends Seeder
                     'localisation' => $oppData['localisation'],
                     'type_contrat' => $oppData['type_contrat'],
                     'description' => $oppData['description'],
-                    'salaire_indicatif' => $oppData['salaire_indicatif'],
-                    'teletravail' => $oppData['teletravail'],
+                    'salaire_indicatif' => $oppData['salaire_indicatif'] ?? null,
+                    'teletravail' => $oppData['teletravail'] ?? false,
                     'url_source' => $oppData['url_source'],
                     'date_publication' => $oppData['date_publication'],
                 ]
             );
+
+            // Calcul du matching sémantique avec le CV
+            $matchingSkills = array_values(array_intersect($cvSkills, $oppData['skills'] ?? []));
+            if (empty($matchingSkills)) {
+                $matchingSkills = ['Architecture Logicielle', 'APIs & Services Web'];
+            }
+
+            $allSkills = ['Architecture Logicielle', 'Conception Web & Cloud', 'APIs & Services Web', 'Bases de Données', 'Cybersécurité', 'CI/CD & Qualité'];
+            $missingSkills = array_values(array_diff($oppData['skills'] ?? [], $cvSkills));
+            if (empty($missingSkills)) {
+                $missingSkills = ['Certifications Spécifiques'];
+            }
+
+            // Score proportionnel aux compétences et localisation
+            $isBeninOrAfrica = str_contains($opp->localisation, 'Bénin') || str_contains($opp->localisation, 'Cotonou') || str_contains($opp->localisation, 'Afrique');
+            $score = 70.0 + (count($matchingSkills) * 5.0) + ($isBeninOrAfrica ? 5.0 : 0.0);
+            $score = min(96.5, max(62.0, $score));
 
             // Création du match associé
             $match = JobMatch::updateOrCreate(
@@ -186,17 +142,17 @@ class JobMatchSeeder extends Seeder
                     'opportunite_id' => $opp->id,
                 ],
                 [
-                    'score_pertinence' => $oppData['score'],
+                    'score_pertinence' => $score,
                     'passed_hard_filters' => true,
-                    'matching_skills' => $oppData['matching_skills'],
-                    'missing_skills' => $oppData['missing_skills'],
-                    'summary_explanation' => $oppData['summary'],
-                    'statut' => $oppData['score'] > 90 ? 'favori' : 'nouveau',
+                    'matching_skills' => $matchingSkills,
+                    'missing_skills' => $missingSkills,
+                    'summary_explanation' => "Match à " . number_format($score, 1) . "% : forte adéquation des compétences en " . implode(', ', array_slice($matchingSkills, 0, 3)) . " pour " . $opp->entreprise . ".",
+                    'statut' => $score > 85 ? 'favori' : 'nouveau',
                 ]
             );
 
-            // Création de candidatures de démonstration selon le score pour illustrer le suivi
-            if ($oppData['score'] > 90) {
+            // Création d'une candidature pour illustrer le suivi (MTN Bénin, Moov Bénin, Sèmè City)
+            if ($opp->entreprise === 'MTN Bénin') {
                 Candidature::updateOrCreate(
                     [
                         'user_id' => $user->id,
@@ -205,63 +161,19 @@ class JobMatchSeeder extends Seeder
                     [
                         'match_id' => $match->id,
                         'objet_email' => "Candidature : {$opp->titre} - Candidat Démo",
-                        'lettre_motivation' => "Candidat Démo\ncandidat.demo@jobmatch.ai | 06 00 00 00 00\n\nÀ l'attention de l'équipe de recrutement\n{$opp->entreprise}\n\nMadame, Monsieur,\n\nC'est avec un vif intérêt que je vous présente ma candidature au poste de {$opp->titre}.\n\nFort de 4 années d'expérience dans la conception de solutions logicielles performantes et fiables, j'ai développé une solide expertise en modélisation de données, architecture applicative et intégration de services web modulaires.\n\nRestant à votre entière disposition pour échanger lors d'un entretien,\n\nBien cordialement,\nCandidat Démo",
+                        'lettre_motivation' => "Candidat Démo\ncandidat.demo@jobmatch.ai | +229 01 97 00 00 00\n\nÀ l'attention de la Direction des Ressources Humaines\nMTN Bénin\nCotonou, Bénin\n\nObjet : Candidature au poste de {$opp->titre}\n\nMadame, Monsieur,\n\nC'est avec un très vif intérêt que je postule au poste de {$opp->titre} au sein de MTN Bénin. Passionné par l'écosystème numérique béninois et les solutions de Mobile Money et services télécoms, je souhaite apporter mon savoir-faire technique à vos équipes.\n\nFort de 4 ans d'expérience en ingénierie logicielle, j'ai développé une maîtrise solide en conception d'architectures résilientes, APIs de paiement et bases de données à haute disponibilité.\n\nRestant à votre disposition pour un entretien,\n\nCandidat Démo",
                         'cv_adaptation_tips' => [
-                            "Mettez en valeur l'intitulé exact du poste dans l'en-tête de votre CV.",
-                            "Détaillez vos réalisations en conception modulaire et performante.",
-                            "Soulignez votre expérience en bases de données et APIs."
+                            "Mettez en valeur votre expérience sur les APIs de paiement et la scalabilité télécom.",
+                            "Précisez vos compétences en architecture microservices et conteneurs Docker.",
+                            "Mentionnez votre rigueur sur la haute disponibilité."
                         ],
-                        'suggested_skills' => $oppData['matching_skills'],
-                        'statut' => 'validee',
-                        'mode_envoi' => 'email',
-                    ]
-                );
-            } elseif ($oppData['score'] >= 80) {
-                // Déposée et en attente de réponse (il y a 3 jours)
-                Candidature::updateOrCreate(
-                    [
-                        'user_id' => $user->id,
-                        'opportunite_id' => $opp->id,
-                    ],
-                    [
-                        'match_id' => $match->id,
-                        'objet_email' => "Candidature : {$opp->titre} - Candidat Démo",
-                        'lettre_motivation' => "Candidat Démo\ncandidat.demo@jobmatch.ai | 06 00 00 00 00\n\nÀ l'attention des Ressources Humaines\n{$opp->entreprise}\n\nMadame, Monsieur,\n\nVotre offre pour le poste de {$opp->titre} a particulièrement retenu mon attention.\n\nMon parcours technique et mes compétences en gestion de flux de données correspondent étroitement aux défis de votre équipe.\n\nDans l'attente d'un échange approfondi,\n\nCordialement,\nCandidat Démo",
-                        'cv_adaptation_tips' => [
-                            "Mettre en exergue vos compétences de pilotage technique.",
-                            "Ajouter des métriques chiffrées sur les volumes de données traités."
-                        ],
-                        'suggested_skills' => $oppData['matching_skills'],
-                        'statut' => 'envoyee',
-                        'date_envoi' => now()->subDays(3),
-                        'notes_candidat' => 'Envoyé par email au responsable RH. En attente de premier retour.',
-                        'mode_envoi' => 'email',
-                    ]
-                );
-            } elseif ($oppData['score'] >= 75) {
-                // Déposée avec entretien décroché (il y a 6 jours)
-                Candidature::updateOrCreate(
-                    [
-                        'user_id' => $user->id,
-                        'opportunite_id' => $opp->id,
-                    ],
-                    [
-                        'match_id' => $match->id,
-                        'objet_email' => "Candidature : {$opp->titre} - Candidat Démo",
-                        'lettre_motivation' => "Candidat Démo\ncandidat.demo@jobmatch.ai | 06 00 00 00 00\n\nÀ l'attention de l'équipe technique\n{$opp->entreprise}\n\nMadame, Monsieur,\n\nDisponible pour intervenir sur votre projet, je vous soumets ma candidature pour la mission de {$opp->titre}.\n\nJe reste à votre écoute pour fixer un créneau d'échange.\n\nBien cordialement,\nCandidat Démo",
-                        'cv_adaptation_tips' => [
-                            "Mettre en avant les missions indépendantes déjà menées.",
-                            "Préciser le TJM et la disponibilité immédiate."
-                        ],
-                        'suggested_skills' => $oppData['matching_skills'],
+                        'suggested_skills' => $matchingSkills,
                         'statut' => 'entretien',
-                        'date_envoi' => now()->subDays(6),
-                        'notes_candidat' => 'Entretien visio prévu mardi prochain à 14h30 avec le directeur technique.',
-                        'mode_envoi' => 'email',
+                        'date_envoi' => now()->subDays(4),
+                        'notes_candidat' => 'Entretien technique prévu avec l\'équipe DSI de MTN Bénin.',
                     ]
                 );
-            } else {
-                // Brouillon en cours de rédaction
+            } elseif ($opp->entreprise === 'Sèmè City (Cité Internationale de l\'Innovation et du Savoir)') {
                 Candidature::updateOrCreate(
                     [
                         'user_id' => $user->id,
@@ -270,11 +182,33 @@ class JobMatchSeeder extends Seeder
                     [
                         'match_id' => $match->id,
                         'objet_email' => "Candidature : {$opp->titre} - Candidat Démo",
-                        'lettre_motivation' => "Candidat Démo\ncandidat.demo@jobmatch.ai\n\nMadame, Monsieur,\n\nJe prépare ma candidature pour le poste de {$opp->titre}...",
-                        'cv_adaptation_tips' => ["Adapter les compétences clés."],
-                        'suggested_skills' => $oppData['matching_skills'],
+                        'lettre_motivation' => "Candidat Démo\ncandidat.demo@jobmatch.ai | +229 01 97 00 00 00\n\nÀ l'attention de l'équipe de recrutement\nSèmè City Bénin\n\nMadame, Monsieur,\n\nCandidature enthousiaste pour le poste de {$opp->titre}. Très motivé à l'idée de contribuer à la cité de l'innovation et du savoir au Bénin avec des technologies full-stack modernes.\n\nCordialement,\nCandidat Démo",
+                        'cv_adaptation_tips' => [
+                            "Mettre en avant les projets d'innovation et le leadership technique.",
+                            "Préciser l'expérience full stack Laravel / Vue.js."
+                        ],
+                        'suggested_skills' => $matchingSkills,
+                        'statut' => 'envoyee',
+                        'date_envoi' => now()->subDays(2),
+                        'notes_candidat' => 'Dossier transmis via la plateforme Sèmè City.',
+                    ]
+                );
+            } elseif ($opp->entreprise === 'Wave Digital Finance') {
+                Candidature::updateOrCreate(
+                    [
+                        'user_id' => $user->id,
+                        'opportunite_id' => $opp->id,
+                    ],
+                    [
+                        'match_id' => $match->id,
+                        'objet_email' => "Candidature : {$opp->titre} - Candidat Démo",
+                        'lettre_motivation' => "Candidat Démo\ncandidat.demo@jobmatch.ai\n\nMadame, Monsieur,\n\nCandidature au poste de {$opp->titre} chez Wave Digital Finance pour participer à l'expansion des services financiers en Afrique de l'Ouest.\n\nCordialement,\nCandidat Démo",
+                        'cv_adaptation_tips' => [
+                            "Démontrer l'expérience en systèmes transactionnels et scalabilité.",
+                        ],
+                        'suggested_skills' => $matchingSkills,
                         'statut' => 'brouillon',
-                        'mode_envoi' => 'email',
+                        'notes_candidat' => 'Brouillon prêt à valider.',
                     ]
                 );
             }

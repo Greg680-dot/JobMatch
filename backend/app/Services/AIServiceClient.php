@@ -8,11 +8,12 @@ use Exception;
 
 class AIServiceClient
 {
-    protected string $baseUrl;
+    protected ?string $baseUrl;
 
     public function __construct()
     {
-        $this->baseUrl = config('services.ai_service.url', env('AI_SERVICE_URL', 'http://127.0.0.1:8000'));
+        $url = env('AI_SERVICE_URL');
+        $this->baseUrl = !empty($url) ? rtrim($url, '/') : null;
     }
 
     /**
@@ -20,6 +21,10 @@ class AIServiceClient
      */
     public function healthCheck(): array
     {
+        if (!$this->baseUrl) {
+            return ['status' => 'local_ai_active', 'mode' => 'moteur_integre'];
+        }
+
         try {
             $response = Http::timeout(2)->get("{$this->baseUrl}/api/v1/health");
             if ($response->successful()) {
@@ -36,20 +41,21 @@ class AIServiceClient
      */
     public function parseCV(string $fileContents, string $filename): array
     {
-        // 1. Essai avec le microservice Python si configuré
-        try {
-            $response = Http::timeout(8)
-                ->attach('file', $fileContents, $filename)
-                ->post("{$this->baseUrl}/api/v1/cv/parse");
+        if ($this->baseUrl) {
+            try {
+                $response = Http::timeout(8)
+                    ->attach('file', $fileContents, $filename)
+                    ->post("{$this->baseUrl}/api/v1/cv/parse");
 
-            if ($response->successful()) {
-                return $response->json();
+                if ($response->successful()) {
+                    return $response->json();
+                }
+            } catch (Exception $e) {
+                Log::info("Microservice IA distant indisponible, utilisation du moteur de parsing intégré: " . $e->getMessage());
             }
-        } catch (Exception $e) {
-            Log::info("Microservice IA distant indisponible, utilisation du moteur de parsing intégré: " . $e->getMessage());
         }
 
-        // 2. Moteur de parsing autonome PHP de secours
+        // Moteur de parsing autonome PHP intégré
         return $this->fallbackParseCV($fileContents, $filename);
     }
 
@@ -58,21 +64,23 @@ class AIServiceClient
      */
     public function calculateMatching(array $cvData, ?array $cvEmbedding, ?array $filters, array $opportunites): array
     {
-        try {
-            $payload = [
-                'cv_data' => $cvData,
-                'cv_embedding' => $cvEmbedding,
-                'filters' => $filters,
-                'opportunites' => $opportunites,
-            ];
+        if ($this->baseUrl) {
+            try {
+                $payload = [
+                    'cv_data' => $cvData,
+                    'cv_embedding' => $cvEmbedding,
+                    'filters' => $filters,
+                    'opportunites' => $opportunites,
+                ];
 
-            $response = Http::timeout(8)->post("{$this->baseUrl}/api/v1/matching/score", $payload);
+                $response = Http::timeout(8)->post("{$this->baseUrl}/api/v1/matching/score", $payload);
 
-            if ($response->successful()) {
-                return $response->json()['results'] ?? [];
+                if ($response->successful()) {
+                    return $response->json()['results'] ?? [];
+                }
+            } catch (Exception $e) {
+                Log::info("Microservice distant indisponible pour le matching, calcul par le moteur local: " . $e->getMessage());
             }
-        } catch (Exception $e) {
-            Log::info("Microservice distant indisponible pour le matching, calcul par le moteur local: " . $e->getMessage());
         }
 
         // Calcul par moteur local direct
@@ -84,23 +92,25 @@ class AIServiceClient
      */
     public function generateLetter(array $candidateProfile, string $jobTitle, string $company, string $jobDescription, array $matchingSkills = [], string $tone = 'Professionnel et percutant'): array
     {
-        try {
-            $payload = [
-                'candidate_profile' => $candidateProfile,
-                'job_title' => $jobTitle,
-                'company_name' => $company,
-                'job_description' => $jobDescription,
-                'matching_skills' => $matchingSkills,
-                'tone' => $tone,
-            ];
+        if ($this->baseUrl) {
+            try {
+                $payload = [
+                    'candidate_profile' => $candidateProfile,
+                    'job_title' => $jobTitle,
+                    'company_name' => $company,
+                    'job_description' => $jobDescription,
+                    'matching_skills' => $matchingSkills,
+                    'tone' => $tone,
+                ];
 
-            $response = Http::timeout(10)->post("{$this->baseUrl}/api/v1/applications/generate-letter", $payload);
+                $response = Http::timeout(10)->post("{$this->baseUrl}/api/v1/applications/generate-letter", $payload);
 
-            if ($response->successful()) {
-                return $response->json();
+                if ($response->successful()) {
+                    return $response->json();
+                }
+            } catch (Exception $e) {
+                Log::info("Génération distante indisponible, rédaction via le moteur rédactionnel intégré.");
             }
-        } catch (Exception $e) {
-            Log::info("Génération distante indisponible, rédaction via le moteur rédactionnel intégré.");
         }
 
         return $this->fallbackGenerateLetter($candidateProfile, $jobTitle, $company, $jobDescription, $matchingSkills);
@@ -111,8 +121,7 @@ class AIServiceClient
      */
     public function collectOffers(string $sourceType = 'all', ?string $targetUrl = null, ?string $category = null, int $maxResults = 25): array
     {
-        // 1. Tente la collecte distante si disponible
-        if ($targetUrl && $sourceType === 'custom_rss') {
+        if ($this->baseUrl && $targetUrl && $sourceType === 'custom_rss') {
             try {
                 $response = Http::timeout(10)->post("{$this->baseUrl}/api/v1/collect/run", [
                     'source_type' => 'rss',
@@ -127,7 +136,7 @@ class AIServiceClient
             }
         }
 
-        // 2. Collecteur d'offres réelles Bénin & Afrique
+        // Collecteur d'offres réelles Bénin & Afrique
         $beninAfricaService = app(BeninAfricaJobService::class);
         $offers = $beninAfricaService->collectAll($sourceType, true);
 
@@ -140,7 +149,6 @@ class AIServiceClient
     protected function fallbackParseCV(string $fileContents, string $filename): array
     {
         $text = strip_tags($fileContents);
-        // Nettoyage sommaire des caractères binaires
         $cleanText = preg_replace('/[^\x20-\x7E\x0A\x0D\xC0-\xFF]/u', ' ', $text);
 
         // Extraction Email
@@ -224,7 +232,6 @@ class AIServiceClient
                 }
             }
 
-            // Compétences communes du marché pour l'analyse des écarts
             $market = ['Architecture Logicielle', 'APIs & Services Web', 'Bases de Données', 'Cybersécurité', 'CI/CD & Qualité', 'Docker', 'Cloud'];
             foreach ($market as $m) {
                 if (stripos($desc, strtolower($m)) !== false && !in_array($m, $cvSkills)) {
@@ -232,7 +239,6 @@ class AIServiceClient
                 }
             }
 
-            // Calcul du score basé sur les correspondances
             $baseScore = 65.0;
             if (count($matching) >= 3) {
                 $baseScore = 88.0 + (count($matching) * 2.5);

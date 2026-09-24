@@ -177,4 +177,51 @@ class JobMatchTest extends TestCase
             'statut' => 'entretien',
         ]);
     }
+
+    public function test_cv_upload_extracts_real_candidate_profile_and_experiences(): void
+    {
+        $user = User::where('email', 'candidat.demo@jobmatch.ai')->first();
+
+        $cvContent = <<<EOT
+LÉON HOUNGBEDJI
+Ingénieur Applicatif & Développeur Fullstack
+Email : leon.h@example.com
+Tél : +229 97 00 11 22
+
+COMPÉTENCES
+- PHP, Laravel, Vue.js, Tailwind CSS, MySQL, Docker, Git
+
+EXPÉRIENCES PROFESSIONNELLES
+2022 - 2026 : Lead Développeur
+Fintech Bénin - Cotonou
+- Développement d'APIs et gestion d'équipe.
+
+FORMATIONS
+2021 : Master Informatique
+IFRI - Université d'Abomey-Calavi
+EOT;
+
+        $file = \Illuminate\Http\UploadedFile::fake()->createWithContent('mon_cv.txt', $cvContent);
+
+        $response = $this->actingAs($user)->post('/cv/upload', [
+            'cv_file' => $file,
+        ]);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success');
+
+        // Check user name updated to real name
+        $user->refresh();
+        $this->assertEquals('Léon Houngbedji', $user->name);
+
+        // Check CV parsed data contains real candidate information
+        $cv = \App\Models\CV::where('user_id', $user->id)->where('is_default', true)->first();
+        $this->assertNotNull($cv);
+        $this->assertEquals('Léon Houngbedji', $cv->parsed_data['nom']);
+        $this->assertEquals('leon.h@example.com', $cv->parsed_data['email']);
+        $this->assertEquals('+229 97 00 11 22', $cv->parsed_data['telephone']);
+        $this->assertContains('PHP', $cv->parsed_data['competences_techniques']);
+        $this->assertNotEmpty($cv->parsed_data['experiences']);
+        $this->assertEquals('Lead Développeur', $cv->parsed_data['experiences'][0]['poste']);
+    }
 }

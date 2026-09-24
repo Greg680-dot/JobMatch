@@ -34,9 +34,21 @@ class CVController extends Controller
         $content = file_get_contents($file->getRealPath());
 
         try {
-            // 1. Parsing et vectorisation via le microservice Python
-            $parseResult = $aiClient->parseCV($content, $filename);
+            $defaultName = $user ? $user->name : 'Candidat';
+
+            // 1. Parsing haute fidélité (autonome ou microservice)
+            $parseResult = $aiClient->parseCV($content, $filename, $defaultName);
             
+            // Si le nom extrait du CV est un nom réel, actualiser le profil utilisateur
+            $extractedName = $parseResult['data']['nom'] ?? null;
+            if ($user && !empty($extractedName) && !in_array(strtolower($extractedName), ['candidat', 'candidat démo', 'candidat demo'])) {
+                $user->name = $extractedName;
+                if (!empty($parseResult['data']['email']) && filter_var($parseResult['data']['email'], FILTER_VALIDATE_EMAIL) && in_array($user->email, ['candidat.demo@jobmatch.ai', 'alexandre.martin@example.com'])) {
+                    $user->email = $parseResult['data']['email'];
+                }
+                $user->save();
+            }
+
             // 2. Mise à jour ou création du CV
             CV::where('user_id', $user->id)->update(['is_default' => false]);
 
@@ -48,10 +60,19 @@ class CVController extends Controller
                 'is_default' => true,
             ]);
 
+            // Synchroniser le type d'opportunité recherché si non encore personnalisé
+            if (!empty($parseResult['data']['titre_professionnel'])) {
+                $profile = ProfilRecherche::firstOrCreate(['user_id' => $user->id]);
+                if (empty($profile->type_opportunite)) {
+                    $profile->type_opportunite = $parseResult['data']['titre_professionnel'];
+                    $profile->save();
+                }
+            }
+
             // 3. Recalcul automatique du matching avec les opportunités existantes
             $this->recalculateMatches($user, $cv, $aiClient);
 
-            return back()->with('success', "CV '{$filename}' analysé avec succès. Les scores de matching ont été actualisés.");
+            return back()->with('success', "CV '{$filename}' analysé avec succès. Votre profil, vos compétences et les scores d'opportunités ont été actualisés.");
         } catch (Exception $e) {
             return back()->with('error', "Erreur lors de l'analyse du CV : " . $e->getMessage());
         }

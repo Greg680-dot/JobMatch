@@ -16,7 +16,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     sqlite3 \
     libsqlite3-dev \
     poppler-utils \
-    && docker-php-ext-install pdo pdo_sqlite mbstring zip bcmath \
+    libpq-dev \
+    && docker-php-ext-install pdo pdo_sqlite pdo_pgsql mbstring zip bcmath \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Installation de Composer

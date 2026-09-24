@@ -15,8 +15,31 @@ class JobMatchSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Création de l'utilisateur candidat démo
-        $user = User::updateOrCreate(
+        // 1. Création de l'utilisateur candidat principal (configurable via variables d'environnement)
+        $customEmail = env('DEFAULT_USER_EMAIL', env('ADMIN_EMAIL'));
+        $customPassword = env('DEFAULT_USER_PASSWORD', env('ADMIN_PASSWORD'));
+        $customName = env('DEFAULT_USER_NAME', env('ADMIN_NAME', 'Candidat'));
+
+        if (!empty($customEmail) && !empty($customPassword)) {
+            $user = User::updateOrCreate(
+                ['email' => $customEmail],
+                [
+                    'name' => $customName,
+                    'password' => bcrypt($customPassword),
+                ]
+            );
+        } else {
+            $user = User::updateOrCreate(
+                ['email' => 'candidat.demo@jobmatch.ai'],
+                [
+                    'name' => 'Candidat Démo',
+                    'password' => bcrypt('password123'),
+                ]
+            );
+        }
+
+        // Compte démo toujours maintenu en secours pour test immédiat
+        User::updateOrCreate(
             ['email' => 'candidat.demo@jobmatch.ai'],
             [
                 'name' => 'Candidat Démo',
@@ -24,7 +47,6 @@ class JobMatchSeeder extends Seeder
             ]
         );
 
-        // Alias pour rétrocompatibilité éventuelle
         User::updateOrCreate(
             ['email' => 'alexandre.martin@example.com'],
             [

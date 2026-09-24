@@ -49,14 +49,22 @@
     <div class="mt-6 sm:mx-auto sm:w-full sm:max-w-md">
         <div class="bg-white py-8 px-5 sm:px-10 shadow-xl shadow-slate-200/50 rounded-2xl sm:rounded-3xl border border-slate-200">
 
-            <!-- Demo 1-Click Login Helper -->
+            <!-- 1-Click Login Helper -->
+            @php
+                $configuredEmail = env('DEFAULT_USER_EMAIL', env('ADMIN_EMAIL', 'candidat.demo@jobmatch.ai'));
+                $configuredPassword = env('DEFAULT_USER_PASSWORD', env('ADMIN_PASSWORD', 'password123'));
+                $isCustomUser = !empty(env('DEFAULT_USER_EMAIL')) || !empty(env('ADMIN_EMAIL'));
+            @endphp
             <div class="mb-5 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-brand-50 to-indigo-50 border border-brand-200/80 shadow-xs">
                 <div class="flex items-center justify-between gap-2">
                     <div>
                         <span class="inline-flex items-center text-[10px] font-extrabold text-brand-800 uppercase tracking-wider">
-                            Compte Démo
+                            {{ $isCustomUser ? 'Mon Compte' : 'Compte Démo' }}
                         </span>
-                        <p class="text-xs text-brand-900 font-bold mt-0.5">Candidat Démo <span class="text-slate-500 font-normal">(Accès Test)</span></p>
+                        <p class="text-xs text-brand-900 font-bold mt-0.5">
+                            {{ $configuredEmail }}
+                            <span class="text-slate-500 font-normal block sm:inline">(MDP : {{ $configuredPassword }})</span>
+                        </p>
                     </div>
                     <button type="button" onclick="fillDemoCredentials()" class="px-3 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold shadow-sm transition shrink-0">
                         Remplir en 1 clic
@@ -131,8 +139,8 @@
 
     <script>
         function fillDemoCredentials() {
-            document.getElementById('email').value = 'candidat.demo@jobmatch.ai';
-            document.getElementById('password').value = 'password123';
+            document.getElementById('email').value = "{{ $configuredEmail }}";
+            document.getElementById('password').value = "{{ $configuredPassword }}";
         }
     </script>
 </body>

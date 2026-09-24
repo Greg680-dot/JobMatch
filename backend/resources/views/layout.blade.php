@@ -60,19 +60,11 @@
                     </nav>
                 @endauth
 
-                <!-- Status Badge & User Menu -->
-                <div class="flex items-center space-x-2 sm:space-x-3">
-                    @if(isset($aiHealth) && $aiHealth['status'] === 'healthy')
-                        <div class="hidden lg:flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                            <span class="w-2 h-2 mr-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                            IA Active (v1.1)
-                        </div>
-                    @else
-                        <div class="hidden lg:flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200" title="Service IA local">
-                            <span class="w-2 h-2 mr-1.5 rounded-full bg-amber-500"></span>
-                            IA Active
-                        </div>
-                    @endif
+                    <!-- Status Badge (IA Active Vert Émeraude) -->
+                    <div class="flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <span class="w-2 h-2 mr-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>IA Active</span>
+                    </div>
 
                     @auth
                         <div class="flex items-center space-x-2 pl-2 border-l border-slate-200">

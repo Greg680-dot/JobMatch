@@ -15,38 +15,13 @@ class JobMatchSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Création de l'utilisateur candidat principal (configurable via variables d'environnement)
-        $customEmail = env('DEFAULT_USER_EMAIL', env('ADMIN_EMAIL'));
-        $customPassword = env('DEFAULT_USER_PASSWORD', env('ADMIN_PASSWORD'));
-        $customName = env('DEFAULT_USER_NAME', env('ADMIN_NAME', 'Candidat'));
-
-        if (!empty($customEmail) && !empty($customPassword)) {
-            $user = User::updateOrCreate(
-                ['email' => $customEmail],
-                [
-                    'name' => $customName,
-                    'password' => bcrypt($customPassword),
-                    'is_admin' => true,
-                ]
-            );
-        } else {
-            $user = User::updateOrCreate(
-                ['email' => 'candidat.demo@jobmatch.ai'],
-                [
-                    'name' => 'Candidat Démo',
-                    'password' => bcrypt('password123'),
-                    'is_admin' => true,
-                ]
-            );
-        }
-
-        // Compte démo toujours maintenu en secours pour test immédiat
-        User::updateOrCreate(
+        // 1. Compte Démo Candidat public (pour les visiteurs et recruteurs du site)
+        $user = User::updateOrCreate(
             ['email' => 'candidat.demo@jobmatch.ai'],
             [
                 'name' => 'Candidat Démo',
                 'password' => bcrypt('password123'),
-                'is_admin' => true,
+                'is_admin' => false,
             ]
         );
 
@@ -55,6 +30,35 @@ class JobMatchSeeder extends Seeder
             [
                 'name' => 'Candidat Démo',
                 'password' => bcrypt('password123'),
+                'is_admin' => false,
+            ]
+        );
+
+        // 2. Compte Administrateur privé (séparé du compte démo)
+        $adminEmail = env('ADMIN_EMAIL', 'admin@jobmatch.ai');
+        $adminPassword = env('ADMIN_PASSWORD', 'AdminSecure2026!');
+        $adminName = env('ADMIN_NAME', 'Administrateur JobMatch');
+
+        $adminUser = User::updateOrCreate(
+            ['email' => $adminEmail],
+            [
+                'name' => $adminName,
+                'password' => bcrypt($adminPassword),
+                'is_admin' => true,
+            ]
+        );
+
+        ProfilRecherche::firstOrCreate(
+            ['user_id' => $adminUser->id],
+            [
+                'type_opportunite' => 'Administration & Direction',
+                'pays' => 'Bénin',
+                'types_contrat' => ['CDI'],
+                'localisations' => ['Bénin', 'Télétravail'],
+                'salaire_min' => null,
+                'keywords_must' => [],
+                'keywords_excluded' => [],
+                'teletravail_only' => false,
             ]
         );
 

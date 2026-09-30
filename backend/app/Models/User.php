@@ -40,19 +40,9 @@ class User extends Authenticatable
             return true;
         }
 
-        $adminEmail = env('ADMIN_EMAIL');
-        $defaultEmail = env('DEFAULT_USER_EMAIL');
+        $adminEmail = env('ADMIN_EMAIL', 'admin@jobmatch.ai');
 
         if (!empty($adminEmail) && strcasecmp($this->email, $adminEmail) === 0) {
-            return true;
-        }
-
-        if (!empty($defaultEmail) && strcasecmp($this->email, $defaultEmail) === 0) {
-            return true;
-        }
-
-        // Par défaut pour le compte démonstration préconfiguré
-        if (strcasecmp($this->email, 'candidat.demo@jobmatch.ai') === 0) {
             return true;
         }
 

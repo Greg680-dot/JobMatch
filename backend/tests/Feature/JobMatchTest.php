@@ -225,9 +225,10 @@ EOT;
         $this->assertEquals('Lead Développeur', $cv->parsed_data['experiences'][0]['poste']);
     }
 
-    public function test_authenticated_user_can_view_analytics_dashboard_and_track_visits(): void
+    public function test_authenticated_admin_can_view_analytics_dashboard_and_track_visits(): void
     {
-        $user = User::where('email', 'candidat.demo@jobmatch.ai')->first();
+        $admin = User::where('is_admin', true)->first();
+        $this->assertNotNull($admin);
 
         // Simulate mobile visitor from Benin
         $this->withHeaders([
@@ -242,7 +243,7 @@ EOT;
         ]);
 
         // View analytics page as authenticated admin user
-        $response = $this->actingAs($user)->get('/statistiques');
+        $response = $this->actingAs($admin)->get('/statistiques');
         $response->assertStatus(200);
         $response->assertSee('Audience & Statistiques', false);
         $response->assertSee('Smartphone');
@@ -255,8 +256,15 @@ EOT;
         $response->assertRedirect('/login');
     }
 
-    public function test_non_admin_user_cannot_view_analytics(): void
+    public function test_demo_candidate_and_regular_user_cannot_view_analytics(): void
     {
+        $demoCandidate = User::where('email', 'candidat.demo@jobmatch.ai')->first();
+        $this->assertFalse($demoCandidate->isAdmin());
+
+        $response = $this->actingAs($demoCandidate)->get('/statistiques');
+        $response->assertRedirect('/dashboard');
+        $response->assertSessionHas('error');
+
         $candidate = User::create([
             'name' => 'Candidat Simple',
             'email' => 'candidat.simple@test.com',

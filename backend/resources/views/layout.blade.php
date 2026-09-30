@@ -75,9 +75,11 @@
                         <a href="{{ route('profile.show') }}" class="px-3 py-2 rounded-xl text-xs lg:text-sm font-bold {{ request()->routeIs('profile.show') ? 'text-brand-700 bg-brand-50' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }} transition">
                             Mon Profil & CV
                         </a>
-                        <a href="{{ route('analytics.index') }}" class="px-3 py-2 rounded-xl text-xs lg:text-sm font-bold {{ request()->routeIs('analytics.*') ? 'text-brand-700 bg-brand-50' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }} transition">
-                            Statistiques
-                        </a>
+                        @if(auth()->user()->isAdmin())
+                            <a href="{{ route('analytics.index') }}" class="px-3 py-2 rounded-xl text-xs lg:text-sm font-bold {{ request()->routeIs('analytics.*') ? 'text-brand-700 bg-brand-50' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }} transition">
+                                Statistiques
+                            </a>
+                        @endif
                     </nav>
                 @endauth
 
@@ -163,10 +165,12 @@
                 <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                 <span class="text-[10px] tracking-tight">Mon Profil</span>
             </a>
-            <a href="{{ route('analytics.index') }}" class="flex flex-col items-center py-1 px-3 rounded-xl {{ request()->routeIs('analytics.*') ? 'text-brand-600 font-bold' : 'text-slate-500 hover:text-slate-800 font-medium' }} transition">
-                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                <span class="text-[10px] tracking-tight">Stats</span>
-            </a>
+            @if(auth()->user()->isAdmin())
+                <a href="{{ route('analytics.index') }}" class="flex flex-col items-center py-1 px-3 rounded-xl {{ request()->routeIs('analytics.*') ? 'text-brand-600 font-bold' : 'text-slate-500 hover:text-slate-800 font-medium' }} transition">
+                    <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    <span class="text-[10px] tracking-tight">Stats</span>
+                </a>
+            @endif
         </nav>
     @endauth
 

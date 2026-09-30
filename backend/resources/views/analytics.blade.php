@@ -11,6 +11,7 @@
             <div class="flex items-center space-x-2">
                 <h1 class="text-xl sm:text-2xl font-black text-slate-900">Audience & Statistiques d'Utilisation</h1>
                 <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">En direct</span>
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">Accès Administrateur</span>
             </div>
             <p class="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
                 Suivez en temps réel la géolocalisation de vos visiteurs (pays), la fréquence de consultation et la répartition mobile vs ordinateur.

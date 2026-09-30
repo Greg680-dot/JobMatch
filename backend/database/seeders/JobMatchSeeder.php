@@ -26,6 +26,7 @@ class JobMatchSeeder extends Seeder
                 [
                     'name' => $customName,
                     'password' => bcrypt($customPassword),
+                    'is_admin' => true,
                 ]
             );
         } else {
@@ -34,6 +35,7 @@ class JobMatchSeeder extends Seeder
                 [
                     'name' => 'Candidat Démo',
                     'password' => bcrypt('password123'),
+                    'is_admin' => true,
                 ]
             );
         }
@@ -44,6 +46,7 @@ class JobMatchSeeder extends Seeder
             [
                 'name' => 'Candidat Démo',
                 'password' => bcrypt('password123'),
+                'is_admin' => true,
             ]
         );
 

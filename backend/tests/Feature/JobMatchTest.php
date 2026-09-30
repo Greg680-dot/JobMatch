@@ -241,11 +241,32 @@ EOT;
             'device_type' => 'Smartphone',
         ]);
 
-        // View analytics page as authenticated user
+        // View analytics page as authenticated admin user
         $response = $this->actingAs($user)->get('/statistiques');
         $response->assertStatus(200);
         $response->assertSee('Audience & Statistiques', false);
         $response->assertSee('Smartphone');
         $response->assertSee('Bénin');
     }
+
+    public function test_unauthenticated_guest_is_redirected_from_analytics(): void
+    {
+        $response = $this->get('/statistiques');
+        $response->assertRedirect('/login');
+    }
+
+    public function test_non_admin_user_cannot_view_analytics(): void
+    {
+        $candidate = User::create([
+            'name' => 'Candidat Simple',
+            'email' => 'candidat.simple@test.com',
+            'password' => bcrypt('password123'),
+            'is_admin' => false,
+        ]);
+
+        $response = $this->actingAs($candidate)->get('/statistiques');
+        $response->assertRedirect('/dashboard');
+        $response->assertSessionHas('error');
+    }
 }
+

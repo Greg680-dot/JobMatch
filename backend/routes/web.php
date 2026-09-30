@@ -43,5 +43,5 @@ Route::middleware('auth')->group(function () {
     Route::put('/candidatures/{candidature}', [CandidatureController::class, 'update'])->name('candidatures.update');
     Route::post('/candidatures/{candidature}/status', [CandidatureController::class, 'updateStatus'])->name('candidatures.status');
 
-    Route::get('/statistiques', [AnalyticsController::class, 'index'])->name('analytics.index');
+    Route::get('/statistiques', [AnalyticsController::class, 'index'])->name('analytics.index')->middleware('admin');
 });

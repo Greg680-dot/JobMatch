@@ -6,42 +6,32 @@
 <div class="max-w-7xl mx-auto space-y-6">
 
     <!-- Header Section -->
-    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
-        <div>
-            <div class="flex items-center space-x-2">
-                <h1 class="text-xl sm:text-2xl font-black text-slate-900">Audience & Statistiques d'Utilisation</h1>
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">En direct</span>
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">Accès Administrateur</span>
-            </div>
-            <p class="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                Suivez en temps réel la géolocalisation de vos visiteurs (pays), la fréquence de consultation et la répartition mobile vs ordinateur.
-            </p>
-        </div>
-        <div class="flex items-center space-x-2 self-start sm:self-auto">
-            <span class="text-xs font-bold text-slate-500">Actualisé en temps réel</span>
+    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="flex items-center space-x-2">
+            <h1 class="text-xl sm:text-2xl font-black text-slate-900">Audience & Statistiques</h1>
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">En direct</span>
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">Accès Administrateur</span>
         </div>
     </div>
 
     <!-- 4 KPI Cards -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <!-- KPI 1 : Total Visites -->
-        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs">
-            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Total Visites</span>
+        <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-xs">
+            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Visites</span>
             <div class="flex items-baseline space-x-2 mt-1">
                 <span class="text-2xl sm:text-3xl font-black text-slate-900">{{ number_format($totalVisites, 0, ',', ' ') }}</span>
                 <span class="text-xs font-semibold text-emerald-600">+{{ $visitesAujourdhui }} auj.</span>
             </div>
-            <p class="text-[11px] text-slate-400 mt-1">Pages consultées sur le site</p>
         </div>
 
         <!-- KPI 2 : Visiteurs Uniques -->
-        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs">
+        <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-xs">
             <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Visiteurs Uniques</span>
             <div class="flex items-baseline space-x-2 mt-1">
                 <span class="text-2xl sm:text-3xl font-black text-slate-900">{{ number_format($visiteursUniques, 0, ',', ' ') }}</span>
                 <span class="text-xs font-semibold text-emerald-600">+{{ $visiteursUniquesToday }} auj.</span>
             </div>
-            <p class="text-[11px] text-slate-400 mt-1">Adresses IP distinctes</p>
         </div>
 
         <!-- KPI 3 : Mobile vs PC -->
@@ -50,24 +40,23 @@
             $mobilePercent = $totalVisites > 0 ? round(($mobileCount / $totalVisites) * 100) : 0;
             $desktopPercent = 100 - $mobilePercent;
         @endphp
-        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs">
+        <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-xs">
             <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Smartphones</span>
             <div class="flex items-baseline space-x-2 mt-1">
                 <span class="text-2xl sm:text-3xl font-black text-brand-600">{{ $mobilePercent }}%</span>
                 <span class="text-xs font-semibold text-slate-500">PC : {{ $desktopPercent }}%</span>
             </div>
-            <p class="text-[11px] text-slate-400 mt-1">Part de trafic mobile</p>
         </div>
 
         <!-- KPI 4 : Pays d'origine -->
-        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs">
+        <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-xs">
             <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Pays Détectés</span>
             <div class="flex items-baseline space-x-2 mt-1">
                 <span class="text-2xl sm:text-3xl font-black text-slate-900">{{ count($countryStats) }}</span>
                 <span class="text-xs font-semibold text-slate-500">régions</span>
             </div>
-            <p class="text-[11px] text-slate-400 mt-1">Bénin, Afrique & International</p>
         </div>
+    </div>
     </div>
 
     <!-- Main Grid: Pays & Appareils -->
@@ -76,10 +65,7 @@
         <!-- Colonne 1 : Téléphone vs Ordinateur & Détail Technique -->
         <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                <div>
-                    <h2 class="text-base font-black text-slate-900">Appareils : Téléphone vs Ordinateur</h2>
-                    <p class="text-xs text-slate-500">Type de terminal employé pour naviguer sur JobMatch AI</p>
-                </div>
+                <h2 class="text-base font-black text-slate-900">Appareils</h2>
             </div>
 
             <!-- Jauges de répartition appareils -->
@@ -141,10 +127,7 @@
         <!-- Colonne 2 : Répartition par Pays -->
         <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                <div>
-                    <h2 class="text-base font-black text-slate-900">Origine Géographique (Pays)</h2>
-                    <p class="text-xs text-slate-500">Provenance des requêtes et visites détectées</p>
-                </div>
+                <h2 class="text-base font-black text-slate-900">Pays</h2>
                 <span class="text-xs font-bold text-brand-600 bg-brand-50 px-2.5 py-1 rounded-lg">
                     {{ count($countryStats) }} pays
                 </span>
@@ -160,10 +143,7 @@
                             <span class="w-8 h-6 rounded bg-slate-100 text-slate-700 font-bold text-[10px] flex items-center justify-center border border-slate-200">
                                 {{ $c->country_code ?: '--' }}
                             </span>
-                            <div>
-                                <p class="text-xs font-bold text-slate-900">{{ $c->country }}</p>
-                                <p class="text-[10px] text-slate-400">Code ISO : {{ $c->country_code ?: 'N/A' }}</p>
-                            </div>
+                            <p class="text-xs font-bold text-slate-900">{{ $c->country }}</p>
                         </div>
                         <div class="text-right">
                             <span class="text-xs font-bold text-slate-900">{{ $c->total }}</span>
@@ -180,11 +160,8 @@
 
     <!-- Fréquence des Visites (7 derniers jours) -->
     <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-1 pb-3 border-b border-slate-100">
-            <div>
-                <h2 class="text-base font-black text-slate-900">Fréquence des Visites (7 derniers jours)</h2>
-                <p class="text-xs text-slate-500">Volume quotidien de consultations de la plateforme</p>
-            </div>
+        <div class="pb-3 border-b border-slate-100">
+            <h2 class="text-base font-black text-slate-900">Fréquence (7 jours)</h2>
         </div>
 
         @php
@@ -208,12 +185,9 @@
 
     <!-- Journal des Dernières Visites (Temps Réel) -->
     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="p-4 sm:p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
-            <div>
-                <h2 class="text-base font-black text-slate-900">Journal des Visites Récentes en Temps Réel</h2>
-                <p class="text-xs text-slate-500">Les 20 dernières requêtes enregistrées avec détails techniques</p>
-            </div>
-            <span class="text-[11px] font-bold text-slate-400">Total : {{ $totalVisites }} requêtes</span>
+        <div class="p-4 sm:p-5 border-b border-slate-100 flex justify-between items-center">
+            <h2 class="text-base font-black text-slate-900">Visites Récentes</h2>
+            <span class="text-xs font-bold text-slate-400">{{ $totalVisites }} total</span>
         </div>
 
         <div class="overflow-x-auto">

@@ -80,54 +80,50 @@
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-center">
                     
                     <!-- Left Column: Copywriting & CTA -->
-                    <div class="lg:col-span-5 text-left space-y-5">
+                    <div class="lg:col-span-5 text-left space-y-4">
                         <h1 class="text-3xl sm:text-4xl xl:text-5xl font-black text-slate-950 tracking-tight leading-[1.15]">
-                            Trouvez l'opportunité qui vous correspond. <br class="hidden sm:inline">
+                            Trouvez l'opportunité idéale. <br class="hidden sm:inline">
                             <span class="bg-gradient-to-r from-brand-700 via-indigo-600 to-brand-500 bg-clip-text text-transparent">
-                                Postulez avec impact, en quelques clics.
+                                Postulez en quelques clics.
                             </span>
                         </h1>
 
                         <!-- Subheadline -->
                         <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
-                            JobMatch AI centralise les offres d'emploi, calcule la compatibilité réelle avec votre CV grâce aux embeddings vectoriels et prépare vos candidatures sur-mesure.
+                            Matching d'offres par compétences et génération de candidatures sur-mesure préparées par intelligence artificielle.
                         </p>
 
                         <!-- Key Benefits List -->
-                        <div class="space-y-2.5 pt-1 text-xs sm:text-sm text-slate-700">
+                        <div class="space-y-2 pt-1 text-xs sm:text-sm text-slate-700">
                             <div class="flex items-center space-x-2.5">
                                 <div class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
                                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
                                 </div>
-                                <span><strong>Scoring Sémantique 0 à 100% :</strong> calcul précis et transparent par intelligence artificielle.</span>
+                                <span>Scoring de pertinence en temps réel</span>
                             </div>
                             <div class="flex items-center space-x-2.5">
                                 <div class="w-5 h-5 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0">
                                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
                                 </div>
-                                <span><strong>Lettres et Pitchs IA :</strong> personnalisés par offre avec mots-clés ATS.</span>
+                                <span>Lettres de motivation adaptées aux ATS</span>
                             </div>
                             <div class="flex items-center space-x-2.5">
                                 <div class="w-5 h-5 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center shrink-0">
                                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
                                 </div>
-                                <span><strong>100% Contrôle Humain :</strong> vous validez chaque étape.</span>
+                                <span>Validation humaine à chaque étape</span>
                             </div>
                         </div>
 
-                        <!-- CTA Actions (Full-width on mobile, inline on sm+) -->
+                        <!-- CTA Actions -->
                         <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                            <a href="{{ route('register') }}" class="px-6 py-3.5 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-sm sm:text-base shadow-xl shadow-brand-600/30 transition text-center">
-                                Créer mon compte candidat &rarr;
+                            <a href="{{ route('register') }}" class="px-6 py-3 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-sm shadow-lg shadow-brand-600/30 transition text-center">
+                                Créer un compte &rarr;
                             </a>
-                            <a href="{{ route('login') }}" class="px-5 py-3.5 rounded-2xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 font-bold text-sm sm:text-base shadow-xs transition text-center">
-                                Se connecter au compte démo
+                            <a href="{{ route('login') }}" class="px-5 py-3 rounded-2xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 font-bold text-sm shadow-xs transition text-center">
+                                Se connecter
                             </a>
                         </div>
-
-                        <p class="text-[11px] sm:text-xs text-slate-400">
-                            Inscription instantanée &bull; Sans engagement &bull; 100% de contrôle humain
-                        </p>
                     </div>
 
                     <!-- Right Column: Interactive Video Showcase (Side by Side on same line) -->
@@ -423,11 +419,11 @@
                         const icon = document.getElementById('playPauseIcon');
                         const text = document.getElementById('playPauseText');
                         if (isPlaying) {
-                            icon.innerText = '⏸️';
+                            icon.innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
                             text.innerText = 'Pause';
                             startLoop();
                         } else {
-                            icon.innerText = '▶️';
+                            icon.innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>';
                             text.innerText = 'Lecture';
                             clearInterval(timer);
                         }
@@ -436,7 +432,7 @@
                     function restartDemo() {
                         showStep(0);
                         isPlaying = true;
-                        document.getElementById('playPauseIcon').innerText = '⏸️';
+                        document.getElementById('playPauseIcon').innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
                         document.getElementById('playPauseText').innerText = 'Pause';
                         startLoop();
                     }
@@ -460,55 +456,54 @@
         </section>
 
         <!-- Features Grid -->
-        <section class="py-14 sm:py-20 bg-white border-t border-slate-200">
+        <section class="py-12 sm:py-16 bg-white border-t border-slate-200">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
-                    <h2 class="text-xs font-bold text-brand-600 uppercase tracking-widest">Une Suite Conçue pour Décrocher des Entretiens</h2>
-                    <p class="text-2xl sm:text-3xl font-black text-slate-950 mt-2 tracking-tight">Comment JobMatch AI fait la différence</p>
+                <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">Fonctionnalités Clés</h2>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                     <!-- Feature 1 -->
-                    <div class="p-5 sm:p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:shadow-md transition">
-                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center mb-3 sm:mb-4">
-                            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 hover:shadow-md transition">
+                        <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center mb-3">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                         </div>
                         <h3 class="text-sm sm:text-base font-bold text-slate-900">Veille Multi-sources</h3>
-                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-                            Agrégation intelligente d'APIs d'emploi officielles (France Travail, Adzuna) et flux RSS avec dédoublonnage automatique.
+                        <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">
+                            Agrégation d'offres au Bénin, en Afrique et à l'international avec dédoublonnage automatique.
                         </p>
                     </div>
 
                     <!-- Feature 2 -->
-                    <div class="p-5 sm:p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:shadow-md transition">
-                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-3 sm:mb-4">
-                            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 hover:shadow-md transition">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-3">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                         </div>
                         <h3 class="text-sm sm:text-base font-bold text-slate-900">Matching Vectoriel IA</h3>
-                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-                            Calcul de similarité sémantique avancée. Vos compétences réelles sont comprises au-delà des simples mots-clés.
+                        <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">
+                            Calcul sémantique précis basé sur vos compétences réelles et votre parcours.
                         </p>
                     </div>
 
                     <!-- Feature 3 -->
-                    <div class="p-5 sm:p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:shadow-md transition">
-                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center mb-3 sm:mb-4">
-                            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                    <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 hover:shadow-md transition">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center mb-3">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                         </div>
-                        <h3 class="text-sm sm:text-base font-bold text-slate-900">Candidature Personnalisée</h3>
-                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-                            Génération de lettres percutantes adaptées à chaque annonce, avec conseils concrets pour optimiser votre CV pour les ATS.
+                        <h3 class="text-sm sm:text-base font-bold text-slate-900">Candidatures IA</h3>
+                        <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">
+                            Génération instantanée de lettres de motivation et pitchs adaptés aux critères ATS.
                         </p>
                     </div>
 
                     <!-- Feature 4 -->
-                    <div class="p-5 sm:p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:shadow-md transition">
-                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center mb-3 sm:mb-4">
-                            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 hover:shadow-md transition">
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center mb-3">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                         </div>
-                        <h3 class="text-sm sm:text-base font-bold text-slate-900">Human-in-the-Loop</h3>
-                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-                            Zéro envoi non maîtrisé. Vous restez maître du contenu, l'ajustez à volonté et décidez de chaque candidature.
+                        <h3 class="text-sm sm:text-base font-bold text-slate-900">Contrôle Total</h3>
+                        <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">
+                            Zéro envoi automatique. Vous validez et personnalisez chaque candidature.
                         </p>
                     </div>
                 </div>
@@ -517,14 +512,11 @@
 
         <!-- CTA Banner -->
         <section class="py-12 sm:py-16 bg-gradient-to-r from-brand-900 via-indigo-900 to-slate-900 text-white text-center">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-6">
-                <h2 class="text-2xl sm:text-4xl font-black tracking-tight leading-snug">Prêt à transformer votre recherche d'opportunités ?</h2>
-                <p class="text-brand-200 text-xs sm:text-base max-w-xl mx-auto px-2">
-                    Rejoignez JobMatch AI dès aujourd'hui et activez votre assistant personnel de candidature.
-                </p>
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+                <h2 class="text-2xl sm:text-3xl font-black tracking-tight leading-snug">Prêt à postuler avec impact ?</h2>
                 <div class="pt-2">
-                    <a href="{{ route('register') }}" class="w-full sm:w-auto inline-flex justify-center px-8 py-3.5 sm:py-4 rounded-2xl bg-white text-brand-900 font-extrabold text-sm shadow-lg hover:bg-brand-50 transition">
-                        Commencer Maintenant &rarr;
+                    <a href="{{ route('register') }}" class="inline-flex justify-center px-8 py-3.5 rounded-2xl bg-white text-brand-900 font-extrabold text-sm shadow-lg hover:bg-brand-50 transition">
+                        Créer un compte &rarr;
                     </a>
                 </div>
             </div>

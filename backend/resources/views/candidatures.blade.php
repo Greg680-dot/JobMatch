@@ -9,13 +9,10 @@
     <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 pb-2 border-b border-slate-200">
         <div>
             <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Suivi de mes Candidatures</h1>
-            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">
-                Consultez, gérez et suivez l'avancement de vos candidatures déposées, en attente de réponse et entretiens.
-            </p>
         </div>
         <div class="flex items-center space-x-2 shrink-0">
-            <a href="{{ route('dashboard') }}" class="inline-flex items-center px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs shadow-sm transition">
-                <span>Explorer les opportunités</span>
+            <a href="{{ route('dashboard') }}" class="inline-flex items-center px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs shadow-sm transition">
+                <span>Explorer les offres</span>
                 <svg class="w-3.5 h-3.5 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </a>
         </div>
@@ -25,59 +22,55 @@
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         
         <!-- KPI 1: Candidatures Déposées -->
-        <a href="{{ route('candidatures.index', ['tab' => 'deposees']) }}" class="p-4 sm:p-5 rounded-2xl bg-white border {{ $activeTab === 'deposees' ? 'border-emerald-500 ring-2 ring-emerald-500/20 shadow-sm' : 'border-slate-200 hover:border-slate-300' }} shadow-2xs transition group">
-            <div class="flex items-center justify-between mb-2">
+        <a href="{{ route('candidatures.index', ['tab' => 'deposees']) }}" class="p-3.5 sm:p-4 rounded-2xl bg-white border {{ $activeTab === 'deposees' ? 'border-emerald-500 ring-2 ring-emerald-500/20 shadow-sm' : 'border-slate-200 hover:border-slate-300' }} shadow-2xs transition group">
+            <div class="flex items-center justify-between mb-1">
                 <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Déposées</span>
-                <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                <div class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
                 </div>
             </div>
             <div class="text-2xl sm:text-3xl font-black text-slate-900 group-hover:text-emerald-600 transition">
                 {{ $counts['deposees'] }}
             </div>
-            <p class="text-[11px] text-slate-400 mt-1 font-medium">Envoyées aux recruteurs</p>
         </a>
 
         <!-- KPI 2: En Attente de Réponse -->
-        <a href="{{ route('candidatures.index', ['tab' => 'en_attente']) }}" class="p-4 sm:p-5 rounded-2xl bg-white border {{ $activeTab === 'en_attente' ? 'border-indigo-500 ring-2 ring-indigo-500/20 shadow-sm' : 'border-slate-200 hover:border-slate-300' }} shadow-2xs transition group">
-            <div class="flex items-center justify-between mb-2">
+        <a href="{{ route('candidatures.index', ['tab' => 'en_attente']) }}" class="p-3.5 sm:p-4 rounded-2xl bg-white border {{ $activeTab === 'en_attente' ? 'border-indigo-500 ring-2 ring-indigo-500/20 shadow-sm' : 'border-slate-200 hover:border-slate-300' }} shadow-2xs transition group">
+            <div class="flex items-center justify-between mb-1">
                 <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">En Attente</span>
-                <div class="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <div class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
             </div>
             <div class="text-2xl sm:text-3xl font-black text-slate-900 group-hover:text-indigo-600 transition">
                 {{ $counts['en_attente'] }}
             </div>
-            <p class="text-[11px] text-slate-400 mt-1 font-medium">En attente de retour</p>
         </a>
 
         <!-- KPI 3: Entretiens Décrochés -->
-        <a href="{{ route('candidatures.index', ['tab' => 'entretien']) }}" class="p-4 sm:p-5 rounded-2xl bg-white border {{ $activeTab === 'entretien' ? 'border-amber-500 ring-2 ring-amber-500/20 shadow-sm' : 'border-slate-200 hover:border-slate-300' }} shadow-2xs transition group">
-            <div class="flex items-center justify-between mb-2">
+        <a href="{{ route('candidatures.index', ['tab' => 'entretien']) }}" class="p-3.5 sm:p-4 rounded-2xl bg-white border {{ $activeTab === 'entretien' ? 'border-amber-500 ring-2 ring-amber-500/20 shadow-sm' : 'border-slate-200 hover:border-slate-300' }} shadow-2xs transition group">
+            <div class="flex items-center justify-between mb-1">
                 <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Entretiens</span>
-                <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <div class="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                 </div>
             </div>
             <div class="text-2xl sm:text-3xl font-black text-slate-900 group-hover:text-amber-600 transition">
                 {{ $counts['entretiens'] }}
             </div>
-            <p class="text-[11px] text-slate-400 mt-1 font-medium">Échanges obtenus</p>
         </a>
 
         <!-- KPI 4: Brouillons & Prêtes -->
-        <a href="{{ route('candidatures.index', ['tab' => 'brouillon']) }}" class="p-4 sm:p-5 rounded-2xl bg-white border {{ $activeTab === 'brouillon' ? 'border-blue-500 ring-2 ring-blue-500/20 shadow-sm' : 'border-slate-200 hover:border-slate-300' }} shadow-2xs transition group">
-            <div class="flex items-center justify-between mb-2">
+        <a href="{{ route('candidatures.index', ['tab' => 'brouillon']) }}" class="p-3.5 sm:p-4 rounded-2xl bg-white border {{ $activeTab === 'brouillon' ? 'border-blue-500 ring-2 ring-blue-500/20 shadow-sm' : 'border-slate-200 hover:border-slate-300' }} shadow-2xs transition group">
+            <div class="flex items-center justify-between mb-1">
                 <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Brouillons</span>
-                <div class="w-8 h-8 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center shrink-0">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                <div class="w-7 h-7 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center shrink-0">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                 </div>
             </div>
             <div class="text-2xl sm:text-3xl font-black text-slate-900 group-hover:text-blue-600 transition">
                 {{ $counts['brouillons'] }}
             </div>
-            <p class="text-[11px] text-slate-400 mt-1 font-medium">À finaliser ou déposer</p>
         </a>
 
     </div>

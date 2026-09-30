@@ -56,10 +56,7 @@
                         <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-brand-900 via-brand-700 to-indigo-600 flex items-center justify-center text-white font-black text-sm sm:text-lg shadow-md shadow-brand-500/20 shrink-0">
                             JM
                         </div>
-                        <div>
-                            <span class="text-base sm:text-xl font-black tracking-tight text-brand-900">JobMatch <span class="text-brand-600">AI</span></span>
-                            <span class="hidden sm:block text-[9px] text-slate-400 uppercase tracking-widest font-semibold">Candidature Assistée</span>
-                        </div>
+                        <span class="text-base sm:text-xl font-black tracking-tight text-brand-900">JobMatch <span class="text-brand-600">AI</span></span>
                     </a>
                 </div>
 
@@ -181,7 +178,7 @@
                 &copy; 2026 JobMatch AI. Tous droits réservés.
             </div>
             <div class="flex items-center space-x-3 text-slate-400">
-                <span>Plateforme d'Aide à la Candidature & Matching d'Opportunités</span>
+                <span>Matching & Candidatures IA</span>
             </div>
         </div>
     </footer>

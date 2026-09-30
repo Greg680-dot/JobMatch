@@ -6,62 +6,59 @@
 <div class="space-y-4 sm:space-y-6">
 
     <!-- Top Hero / Welcome Banner -->
-    <div class="bg-gradient-to-r from-brand-900 via-brand-800 to-indigo-900 rounded-2xl p-4 sm:p-6 text-white shadow-md flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div class="bg-gradient-to-r from-brand-900 via-brand-800 to-indigo-900 rounded-2xl p-4 sm:p-5 text-white shadow-md flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-            <h1 class="text-xl sm:text-2xl font-black tracking-tight">Bonjour {{ $user->name }}</h1>
-            <p class="text-brand-100 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
-                L'IA analyse en temps réel les opportunités d'emploi réelles au Bénin, en Afrique de l'Ouest et en télétravail international par similarité avec votre profil
+            <div class="flex flex-wrap items-center gap-2">
+                <h1 class="text-xl sm:text-2xl font-black tracking-tight">{{ $user->name }}</h1>
                 @if($cv)
-                    (<span class="font-medium text-white">{{ $cv->parsed_data['titre_professionnel'] ?? 'Ingénieur Logiciel' }}</span>).
+                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                        {{ $cv->parsed_data['titre_professionnel'] ?? 'Profil Actif' }}
+                    </span>
                 @else
-                    . <a href="{{ route('profile.show') }}" class="underline font-bold text-white hover:text-brand-200">Téléversez votre CV</a> pour activer le scoring.
+                    <a href="{{ route('profile.show') }}" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 transition">
+                        Ajouter un CV
+                    </a>
                 @endif
-            </p>
+            </div>
+
             <!-- Critères de recherche actifs -->
             @if(isset($profile) && ($profile->type_opportunite || $profile->pays || !empty($profile->types_contrat)))
-                <div class="mt-3 flex flex-wrap items-center gap-1.5 text-xs">
-                    <span class="text-brand-200 font-semibold">Vos critères :</span>
+                <div class="mt-2.5 flex flex-wrap items-center gap-1.5 text-xs text-brand-200">
                     @if($profile->type_opportunite)
-                        <span class="px-2.5 py-0.5 rounded-lg bg-white/20 text-white font-medium backdrop-blur-xs">
-                            Poste : {{ $profile->type_opportunite }}
+                        <span class="px-2 py-0.5 rounded-lg bg-white/10 text-white font-medium">
+                            {{ $profile->type_opportunite }}
                         </span>
                     @endif
                     @if($profile->pays)
-                        <span class="px-2.5 py-0.5 rounded-lg bg-white/20 text-white font-medium backdrop-blur-xs">
-                            Pays : {{ $profile->pays }}
+                        <span class="px-2 py-0.5 rounded-lg bg-white/10 text-white font-medium">
+                            {{ $profile->pays }}
                         </span>
                     @endif
                     @if(!empty($profile->types_contrat))
-                        <span class="px-2.5 py-0.5 rounded-lg bg-white/20 text-white font-medium backdrop-blur-xs">
-                            Contrat : {{ implode(', ', $profile->types_contrat) }}
+                        <span class="px-2 py-0.5 rounded-lg bg-white/10 text-white font-medium">
+                            {{ implode(', ', $profile->types_contrat) }}
                         </span>
                     @endif
-                    <a href="{{ route('profile.show') }}#preferences" class="ml-1 text-[11px] text-brand-200 hover:text-white underline font-semibold transition">
-                        Modifier &rarr;
-                    </a>
-                </div>
-            @else
-                <div class="mt-3">
-                    <a href="{{ route('profile.show') }}#preferences" class="inline-flex items-center text-xs text-brand-200 hover:text-white font-semibold underline">
-                        Définir vos critères (type d'opportunité, Bénin / Afrique, contrat) &rarr;
+                    <a href="{{ route('profile.show') }}#preferences" class="ml-1 text-[11px] text-brand-300 hover:text-white underline transition">
+                        Modifier
                     </a>
                 </div>
             @endif
         </div>
 
-        <!-- Formulaire de Collecte Multi-Sources (Bénin, Afrique, International) -->
-        <div class="w-full md:w-auto bg-white/10 backdrop-blur-md p-2.5 rounded-xl border border-white/15">
+        <!-- Formulaire de Collecte Rapide -->
+        <div class="w-full md:w-auto bg-white/10 backdrop-blur-md p-2 rounded-xl border border-white/15">
             <form action="{{ route('opportunites.collect') }}" method="POST" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                 @csrf
-                <select name="source_type" class="px-3 py-2 rounded-lg bg-white text-slate-900 font-semibold text-xs border-0 focus:ring-2 focus:ring-brand-400 focus:outline-none">
-                    <option value="all">Toutes sources (Bénin + Afrique + Remote)</option>
-                    <option value="benin" {{ request('region') == 'benin' ? 'selected' : '' }}>Bénin (Novojob Bénin, ANPE, ESNs)</option>
-                    <option value="afrique" {{ request('region') == 'afrique' ? 'selected' : '' }}>Afrique de l'Ouest (Sénégal, CI, Togo, ReliefWeb)</option>
-                    <option value="remote" {{ request('region') == 'remote' ? 'selected' : '' }}>Télétravail & Remote Africa</option>
+                <select name="source_type" class="px-2.5 py-1.5 rounded-lg bg-white text-slate-900 font-semibold text-xs border-0 focus:ring-2 focus:ring-brand-400 focus:outline-none">
+                    <option value="all">Toutes sources</option>
+                    <option value="benin" {{ request('region') == 'benin' ? 'selected' : '' }}>Bénin</option>
+                    <option value="afrique" {{ request('region') == 'afrique' ? 'selected' : '' }}>Afrique de l'Ouest</option>
+                    <option value="remote" {{ request('region') == 'remote' ? 'selected' : '' }}>Télétravail</option>
                 </select>
-                <button type="submit" class="px-3.5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs shadow-xs transition flex items-center justify-center space-x-1.5 whitespace-nowrap">
+                <button type="submit" class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs shadow-xs transition flex items-center justify-center space-x-1.5 whitespace-nowrap">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                    <span>Lancer la Collecte</span>
+                    <span>Actualiser</span>
                 </button>
             </form>
         </div>
@@ -71,7 +68,7 @@
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
         <div class="bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between">
             <div>
-                <p class="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider">Offres Veillées</p>
+                <p class="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider">Offres</p>
                 <p class="text-xl sm:text-2xl font-black text-slate-900 mt-0.5">{{ $stats['total_opportunites'] }}</p>
             </div>
             <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
@@ -81,7 +78,7 @@
 
         <div class="bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between">
             <div>
-                <p class="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider">Matches Forts (&gt;70%)</p>
+                <p class="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider">Matches &gt;70%</p>
                 <p class="text-xl sm:text-2xl font-black text-emerald-600 mt-0.5">{{ $stats['high_matches'] }}</p>
             </div>
             <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
@@ -114,10 +111,9 @@
     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         
         <!-- Header & Filter Bar -->
-        <div class="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-200 flex flex-col lg:flex-row justify-between lg:items-center gap-3 bg-slate-50/60">
+        <div class="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-200 flex flex-col sm:flex-row justify-between sm:items-center gap-3 bg-slate-50/60">
             <div>
                 <h2 class="text-base sm:text-lg font-bold text-slate-900">Opportunités Recommandées</h2>
-                <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Vraies offres analysées par similarité sémantique et adéquation des compétences.</p>
             </div>
 
             <!-- Filtres par Région & Critères -->

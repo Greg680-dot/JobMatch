@@ -224,4 +224,28 @@ EOT;
         $this->assertNotEmpty($cv->parsed_data['experiences']);
         $this->assertEquals('Lead Développeur', $cv->parsed_data['experiences'][0]['poste']);
     }
+
+    public function test_authenticated_user_can_view_analytics_dashboard_and_track_visits(): void
+    {
+        $user = User::where('email', 'candidat.demo@jobmatch.ai')->first();
+
+        // Simulate mobile visitor from Benin
+        $this->withHeaders([
+            'User-Agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) Mobile/15E148',
+            'CF-IPCountry' => 'BJ',
+        ])->get('/');
+
+        // Verify visit was tracked in database
+        $this->assertDatabaseHas('visites', [
+            'country' => 'Bénin',
+            'device_type' => 'Smartphone',
+        ]);
+
+        // View analytics page as authenticated user
+        $response = $this->actingAs($user)->get('/statistiques');
+        $response->assertStatus(200);
+        $response->assertSee('Audience & Statistiques', false);
+        $response->assertSee('Smartphone');
+        $response->assertSee('Bénin');
+    }
 }

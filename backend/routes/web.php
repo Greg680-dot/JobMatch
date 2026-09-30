@@ -6,6 +6,7 @@ use App\Http\Controllers\CVController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\CandidatureController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AnalyticsController;
 
 // 1. Page d'Accueil Publique (Vitrine)
 Route::get('/', function () {
@@ -41,4 +42,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/candidatures/opportunite/{opportunite}', [CandidatureController::class, 'generate'])->name('candidatures.generate');
     Route::put('/candidatures/{candidature}', [CandidatureController::class, 'update'])->name('candidatures.update');
     Route::post('/candidatures/{candidature}/status', [CandidatureController::class, 'updateStatus'])->name('candidatures.status');
+
+    Route::get('/statistiques', [AnalyticsController::class, 'index'])->name('analytics.index');
 });
